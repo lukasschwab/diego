@@ -1,7 +1,7 @@
-package schema
+package diego
 
-// Diego is the top-level configuration object for a set of flags.
-type Diego struct {
+// Schema is the top-level configuration object for a set of flags.
+type Schema struct {
 	// Prefix for env vars; e.g. the flag --color corresponds to the env
 	// variable {PREFIX}_COLOR
 	EnvironmentPrefix string `json:"environmentPrefix"`

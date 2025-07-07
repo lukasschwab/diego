@@ -10,8 +10,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/lukasschwab/diego/internal/diegogo"
-	"github.com/lukasschwab/diego/internal/schema"
+	"github.com/lukasschwab/diego/internal/diego"
 	"github.com/tailscale/hujson"
 )
 
@@ -21,7 +20,7 @@ func main() {
 	}
 	source := os.Args[1]
 
-	d := new(schema.Diego)
+	d := new(diego.Schema)
 	jsonBytes, err := os.ReadFile(source)
 	if err != nil {
 		log.Fatalf("error reading source file: %v", err)
@@ -34,7 +33,7 @@ func main() {
 		log.Fatalf("error unmarshaling source JSON: %v", err)
 	}
 
-	tmpl, err := template.New("diego").Parse(diegogo.Template)
+	tmpl, err := template.New("diego").Parse(diego.Template)
 	if err != nil {
 		log.Fatalf("error parsing template: %v", err)
 	}
@@ -56,7 +55,7 @@ func main() {
 	}
 }
 
-func toTemplate(d *schema.Diego, source string) *templateDiego {
+func toTemplate(d *diego.Schema, source string) *templateDiego {
 	td := &templateDiego{
 		Package:    "main", // Assuming main for now, will need to be configurable
 		StructName: toGoName(d.EnvironmentPrefix) + "Vars",
