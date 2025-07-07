@@ -1,0 +1,41 @@
+{
+    "$id": "https://github.com/lukasschwab/diego@v0",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Diego Configuration",
+    "description": "Configuration for defining program configuration to be parsed with diego.",
+    "type": "object",
+    "properties": {
+        "$id": {
+            "type": "string",
+            "description": "Unique ID (recommended by JSON Schema): usually your Go package name, version."
+        },
+        "environmentPrefix": {
+            "type": "string",
+            "description": "Prefix for env vars; e.g. the flag --color corresponds to the env variable LUKAS_COLOR."
+        },
+        "flags": {
+            "type": "array",
+            "description": "Flags to be parsed.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the flag. This will be --color at the command line and {PREFIX}_COLOR in the environment."
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type: either bool, int, or string.",
+                        "enum": ["bool", "int", "string"]
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of what this flag configures."
+                    }
+                },
+                "required": ["name", "type", "description"]
+            }
+        }
+    },
+    "required": ["environmentPrefix", "flags"]
+}
