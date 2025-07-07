@@ -19,7 +19,8 @@ type {{ .StructName }} struct {
 }
 
 // Parse initializes the {{ .StructName }} from command-line and environment
-// variables.
+// variables. Typically args should be os.Args[1:]; do not include the
+// executable name.
 func (base *{{ .StructName }}) Parse(args []string) error {
 	return errors.Join(
 		base.foldEnv(),

@@ -9,7 +9,7 @@ import (
 
 func main() {
 	vars := new(LukasVars)
-	err := vars.Parse(os.Args)
+	err := vars.Parse(os.Args[1:])
 
 	log.Printf("Diego errors: %v", err)
 	log.Printf("Parsed flags: %+v", vars)

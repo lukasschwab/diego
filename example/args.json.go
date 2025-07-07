@@ -23,7 +23,8 @@ type LukasVars struct {
 }
 
 // Parse initializes the LukasVars from command-line and environment
-// variables.
+// variables. Typically args should be os.Args[1:]; do not include the
+// executable name.
 func (base *LukasVars) Parse(args []string) error {
 	return errors.Join(
 		base.foldEnv(),
