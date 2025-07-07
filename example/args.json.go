@@ -10,8 +10,8 @@ import (
 	"github.com/lukasschwab/diego/pkg/env"
 )
 
-// LUKASVars generated from ./args.json.
-type LUKASVars struct {
+// LukasVars generated from ./args.json.
+type LukasVars struct {
 	// --color: enable ANSI colors in CLI output
 	Color bool `json:"color,omitempty"`
 	// --verbose: enable verbose logging
@@ -22,16 +22,16 @@ type LUKASVars struct {
 	Workers int `json:"workers,omitempty"`
 }
 
-// Parse initializes the LUKASVars from command-line and environment
+// Parse initializes the LukasVars from command-line and environment
 // variables.
-func (base *LUKASVars) Parse(args []string) error {
+func (base *LukasVars) Parse(args []string) error {
 	return errors.Join(
 		base.foldEnv(),
 		base.foldArgs(args),
 	)
 }
 
-func (base *LUKASVars) foldEnv() error {
+func (base *LukasVars) foldEnv() error {
 	var err error
 	err = errors.Join(err, env.LookupBool(&base.Color, "LUKAS_COLOR"))
 	err = errors.Join(err, env.LookupBool(&base.Verbose, "LUKAS_VERBOSE"))
@@ -40,8 +40,8 @@ func (base *LUKASVars) foldEnv() error {
 	return err
 }
 
-func (base *LUKASVars) foldArgs(args []string) error {
-	fs := flag.NewFlagSet("LUKASVars", flag.ContinueOnError)
+func (base *LukasVars) foldArgs(args []string) error {
+	fs := flag.NewFlagSet("LukasVars", flag.ContinueOnError)
 	fs.BoolVar(&base.Color, "color", base.Color, "enable ANSI colors in CLI output")
 	fs.BoolVar(&base.Verbose, "verbose", base.Verbose, "enable verbose logging")
 	fs.StringVar(&base.File, "file", base.File, "path of file to process")

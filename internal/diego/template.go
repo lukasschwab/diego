@@ -18,7 +18,7 @@ import (
 type {{ .StructName }} struct {
 {{- range .Flags }}
 	// --{{ .Name }}: {{ .Description }}
-	{{ .GoName }} {{ .GoType }} ` + "`" + `json:"{{ .JSONName }},omitempty"` + "`" + `
+	{{ .GoName }} {{ .GoType }} ` + "`" + `json:"{{ .Name }},omitempty"` + "`" + `
 {{- end }}
 }
 

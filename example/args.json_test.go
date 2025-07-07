@@ -9,7 +9,7 @@ import (
 
 func TestLukasVars_Parse(t *testing.T) {
 	t.Run("no env or flags", func(t *testing.T) {
-		vars := &LUKASVars{}
+		vars := &LukasVars{}
 		err := vars.Parse([]string{})
 		check.Nil(t, err)
 		assert.False(t, vars.Color)
@@ -24,7 +24,7 @@ func TestLukasVars_Parse(t *testing.T) {
 		t.Setenv("LUKAS_FILE", "/tmp/foo")
 		t.Setenv("LUKAS_WORKERS", "10")
 
-		vars := &LUKASVars{}
+		vars := &LukasVars{}
 		err := vars.Parse([]string{})
 		check.Nil(t, err)
 
@@ -46,7 +46,7 @@ func TestLukasVars_Parse(t *testing.T) {
 			"--file=/tmp/bar",
 			"--workers=20",
 		}
-		vars := &LUKASVars{}
+		vars := &LukasVars{}
 		err := vars.Parse(args)
 		check.Nil(t, err)
 

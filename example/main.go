@@ -8,7 +8,7 @@ import (
 //go:generate go run ../cmd/diego ./args.json
 
 func main() {
-	vars := new(LUKASVars)
+	vars := new(LukasVars)
 	err := vars.Parse(os.Args)
 
 	log.Printf("Diego errors: %v", err)
