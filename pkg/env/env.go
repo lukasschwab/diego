@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
+// LookupString in environment; write to target if it's set.
 func LookupString(target *string, name string) {
 	read, ok := os.LookupEnv(name)
 	if ok {
@@ -13,6 +15,8 @@ func LookupString(target *string, name string) {
 	}
 }
 
+// LookupInt in environment; write to target if it's set and parseable as a
+// decimal int.
 func LookupInt(target *int, name string) error {
 	raw, ok := os.LookupEnv(name)
 	if !ok {
@@ -26,12 +30,13 @@ func LookupInt(target *int, name string) error {
 	return nil
 }
 
+// LookupBool in environment; write to target if it's set.
 func LookupBool(target *bool, name string) error {
 	raw, ok := os.LookupEnv(name)
 	if !ok {
 		return nil
 	}
-	truthiness := raw != ""
+	truthiness := raw != "" && strings.ToLower(raw) != "false"
 	*target = truthiness
 	return nil
 }
