@@ -1,6 +1,6 @@
 {
     // Prefix for env vars; e.g. the flag --color corresponds to the env variable LUKAS_COLOR
-    "environmentPrefix": "LUKAS",
+    "environmentPrefix": "fooxample",
     // Flags to be parsed.
     "flags": [
         {

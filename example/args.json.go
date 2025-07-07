@@ -10,8 +10,8 @@ import (
 	"github.com/lukasschwab/diego/pkg/env"
 )
 
-// LukasVars generated from ./args.json.
-type LukasVars struct {
+// FooxampleVars generated from ./args.json.
+type FooxampleVars struct {
 	// --color: enable ANSI colors in CLI output
 	Color bool `json:"color,omitempty"`
 	// --verbose: enable verbose logging
@@ -24,33 +24,33 @@ type LukasVars struct {
 	ReadOnly bool `json:"read-only,omitempty"`
 }
 
-// Parse initializes the LukasVars from command-line and environment
+// Parse initializes the FooxampleVars from command-line and environment
 // variables. Typically args should be os.Args[1:]; do not include the
 // executable name.
-func (base *LukasVars) Parse(args []string) error {
+func (base *FooxampleVars) Parse(args []string) error {
 	return errors.Join(
 		base.foldEnv(),
 		base.foldArgs(args),
 	)
 }
 
-func (base *LukasVars) foldEnv() error {
+func (base *FooxampleVars) foldEnv() error {
 	var err error
-	err = errors.Join(err, env.LookupBool(&base.Color, "LUKAS_COLOR"))
-	err = errors.Join(err, env.LookupBool(&base.Verbose, "LUKAS_VERBOSE"))
-	env.LookupString(&base.File, "LUKAS_FILE")
-	err = errors.Join(err, env.LookupInt(&base.Workers, "LUKAS_WORKERS"))
-	err = errors.Join(err, env.LookupBool(&base.ReadOnly, "LUKAS_READ_ONLY"))
+	err = errors.Join(err, env.LookupBool(&base.Color, "FOOXAMPLE_COLOR"))
+	err = errors.Join(err, env.LookupBool(&base.Verbose, "FOOXAMPLE_VERBOSE"))
+	env.LookupString(&base.File, "FOOXAMPLE_FILE")
+	err = errors.Join(err, env.LookupInt(&base.Workers, "FOOXAMPLE_WORKERS"))
+	err = errors.Join(err, env.LookupBool(&base.ReadOnly, "FOOXAMPLE_READ_ONLY"))
 	return err
 }
 
-func (base *LukasVars) foldArgs(args []string) error {
-	fs := flag.NewFlagSet("LukasVars", flag.ContinueOnError)
-	fs.BoolVar(&base.Color, "color", base.Color, "enable ANSI colors in CLI output")
-	fs.BoolVar(&base.Verbose, "verbose", base.Verbose, "enable verbose logging")
-	fs.StringVar(&base.File, "file", base.File, "path of file to process")
-	fs.IntVar(&base.Workers, "workers", base.Workers, "number of workers to use in parallel")
-	fs.BoolVar(&base.ReadOnly, "read-only", base.ReadOnly, "do not write output to file")
+func (base *FooxampleVars) foldArgs(args []string) error {
+	fs := flag.NewFlagSet("fooxample", flag.ExitOnError)
+	fs.BoolVar(&base.Color, "color", base.Color, "enable ANSI colors in CLI output [FOOXAMPLE_COLOR]")
+	fs.BoolVar(&base.Verbose, "verbose", base.Verbose, "enable verbose logging [FOOXAMPLE_VERBOSE]")
+	fs.StringVar(&base.File, "file", base.File, "path of file to process [FOOXAMPLE_FILE]")
+	fs.IntVar(&base.Workers, "workers", base.Workers, "number of workers to use in parallel [FOOXAMPLE_WORKERS]")
+	fs.BoolVar(&base.ReadOnly, "read-only", base.ReadOnly, "do not write output to file [FOOXAMPLE_READ_ONLY]")
 	if err := fs.Parse(args); err != nil {
 		return fmt.Errorf("failed to parse command line args: %w", err)
 	}
