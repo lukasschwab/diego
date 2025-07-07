@@ -1,4 +1,5 @@
 test: example/args.json.go
+	go test ./...
 	go run ./example
 
 diff:
