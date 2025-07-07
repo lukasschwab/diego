@@ -5,10 +5,6 @@
     "description": "Configuration for defining program configuration to be parsed with diego.",
     "type": "object",
     "properties": {
-        "$id": {
-            "type": "string",
-            "description": "Unique ID (recommended by JSON Schema): usually your Go package name, version."
-        },
         "environmentPrefix": {
             "type": "string",
             "description": "Prefix for env vars; e.g. the flag --color corresponds to the env variable LUKAS_COLOR."

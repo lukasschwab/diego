@@ -1,6 +1,4 @@
 {
-    // Unique ID (recommended by JSON Schema): usually your Go package name, verison
-    "$id": "github.com/lukasschwab/diego/example",
     // Prefix for env vars; e.g. the flag --color corresponds to the env variable LUKAS_COLOR
     "environmentPrefix": "LUKAS",
     // Flags to be parsed.
