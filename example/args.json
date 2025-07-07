@@ -1,15 +1,9 @@
 {
-    // Prefix for env vars; e.g. the flag --color corresponds to the env variable LUKAS_COLOR
     "environmentPrefix": "fooxample",
-    // Flags to be parsed.
     "flags": [
         {
-            // Name of the flag. This will be --color at the command line and
-            // {PREFIX}_COLOR in the environment.
             "name": "color",
-            // Type: either bool, int, or string.
             "type": "bool",
-            // Description of what this flag configures.
             "description": "enable ANSI colors in CLI output"
         },
         {
