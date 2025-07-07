@@ -26,6 +26,11 @@
             "name": "workers",
             "type": "int",
             "description": "number of workers to use in parallel"
-        }
+        },
+        {
+            "name": "read-only",
+            "type": "bool",
+            "description": "do not write output to file"
+        },
     ]
 }

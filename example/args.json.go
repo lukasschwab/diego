@@ -20,6 +20,8 @@ type LukasVars struct {
 	File string `json:"file,omitempty"`
 	// --workers: number of workers to use in parallel
 	Workers int `json:"workers,omitempty"`
+	// --read-only: do not write output to file
+	ReadOnly bool `json:"read-only,omitempty"`
 }
 
 // Parse initializes the LukasVars from command-line and environment
@@ -38,6 +40,7 @@ func (base *LukasVars) foldEnv() error {
 	err = errors.Join(err, env.LookupBool(&base.Verbose, "LUKAS_VERBOSE"))
 	env.LookupString(&base.File, "LUKAS_FILE")
 	err = errors.Join(err, env.LookupInt(&base.Workers, "LUKAS_WORKERS"))
+	err = errors.Join(err, env.LookupBool(&base.ReadOnly, "LUKAS_READ_ONLY"))
 	return err
 }
 
@@ -47,6 +50,7 @@ func (base *LukasVars) foldArgs(args []string) error {
 	fs.BoolVar(&base.Verbose, "verbose", base.Verbose, "enable verbose logging")
 	fs.StringVar(&base.File, "file", base.File, "path of file to process")
 	fs.IntVar(&base.Workers, "workers", base.Workers, "number of workers to use in parallel")
+	fs.BoolVar(&base.ReadOnly, "read-only", base.ReadOnly, "do not write output to file")
 	if err := fs.Parse(args); err != nil {
 		return fmt.Errorf("failed to parse command line args: %w", err)
 	}
