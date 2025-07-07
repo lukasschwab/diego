@@ -12,6 +12,7 @@ type TemplateSchema struct {
 	StructName string
 	Source     string
 	Flags      []TemplateFlag
+	Prefix     Prefix
 }
 
 // TemplateFlag is an intermediate derived from Flag for use with Template.
@@ -27,16 +28,19 @@ func (f TemplateFlag) GoName() string {
 	return BuildGoName(f.Name)
 }
 
+func (f TemplateFlag) EnvVar() string {
+	return BuildEnvVar(f.Prefix, f.Name)
+}
+
 // EnvLookup is exported for access from the template.
 func (f TemplateFlag) EnvLookup(errName string) string {
-	envVar := BuildEnvVar(f.Prefix, f.Name)
 	switch f.GoType {
 	case "string":
-		return fmt.Sprintf(`env.LookupString(&base.%s, "%s")`, f.GoName(), envVar)
+		return fmt.Sprintf(`env.LookupString(&base.%s, "%s")`, f.GoName(), f.EnvVar())
 	case "int":
-		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupInt(&base.%s, "%s"))`, errName, errName, f.GoName(), envVar)
+		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupInt(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
 	case "bool":
-		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupBool(&base.%s, "%s"))`, errName, errName, f.GoName(), envVar)
+		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupBool(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
 	default:
 		log.Fatalf("Unsupported go type '%v'", f.GoType)
 		return ""

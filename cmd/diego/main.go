@@ -50,7 +50,7 @@ func parseSchema(source string) (*diego.Schema, error) {
 }
 
 func prepareSchema(d *diego.Schema, source string) (*diego.TemplateSchema, error) {
-	prefix, err := diego.ValidateEnvPrefix(d.EnvironmentPrefix)
+	prefix, err := diego.ValidatePrefix(d.EnvironmentPrefix)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,7 @@ func prepareSchema(d *diego.Schema, source string) (*diego.TemplateSchema, error
 		StructName: diego.BuildGoName(d.EnvironmentPrefix) + "Vars",
 		Source:     source,
 		Flags:      make([]diego.TemplateFlag, len(d.Flags)),
+		Prefix:     prefix,
 	}
 	for i, f := range d.Flags {
 		td.Flags[i] = diego.TemplateFlag{

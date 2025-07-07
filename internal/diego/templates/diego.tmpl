@@ -37,9 +37,9 @@ func (base *{{ .StructName }}) foldEnv() error {
 }
 
 func (base *{{ .StructName }}) foldArgs(args []string) error {
-	fs := flag.NewFlagSet("{{ .StructName }}", flag.ContinueOnError)
+	fs := flag.NewFlagSet("{{ .Prefix }}", flag.ExitOnError)
 {{- range .Flags }}
-	fs.{{ .FlagVar }}(&base.{{ .GoName }}, "{{ .Name }}", base.{{ .GoName }}, "{{ .Description }}")
+	fs.{{ .FlagVar }}(&base.{{ .GoName }}, "{{ .Name }}", base.{{ .GoName }}, "{{ .Description }} [{{ .EnvVar }}]")
 {{- end }}
 	if err := fs.Parse(args); err != nil {
 		return fmt.Errorf("failed to parse command line args: %w", err)
