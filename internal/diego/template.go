@@ -36,11 +36,11 @@ func (f TemplateFlag) EnvVar() string {
 func (f TemplateFlag) EnvLookup(errName string) string {
 	switch f.GoType {
 	case "string":
-		return fmt.Sprintf(`lookupString(&base.%s, "%s")`, f.GoName(), f.EnvVar())
+		return fmt.Sprintf(`env.LookupString(&base.%s, "%s")`, f.GoName(), f.EnvVar())
 	case "int":
-		return fmt.Sprintf(`%s = errors.Join(%s, lookupInt(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
+		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupInt(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
 	case "bool":
-		return fmt.Sprintf(`%s = errors.Join(%s, lookupBool(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
+		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupBool(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
 	default:
 		log.Fatalf("Unsupported go type '%v'", f.GoType)
 		return ""

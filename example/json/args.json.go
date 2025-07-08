@@ -6,9 +6,8 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+
+	"github.com/lukasschwab/diego/pkg/env"
 )
 
 // Parse initializes the ExampleVars from command-line and environment
@@ -23,11 +22,11 @@ func (base *ExampleVars) Parse(args []string) error {
 
 func (base *ExampleVars) foldEnv() error {
 	var err error
-	err = errors.Join(err, lookupBool(&base.Color, "EXAMPLE_COLOR"))
-	err = errors.Join(err, lookupBool(&base.Verbose, "EXAMPLE_VERBOSE"))
-	lookupString(&base.File, "EXAMPLE_FILE")
-	err = errors.Join(err, lookupInt(&base.Workers, "EXAMPLE_WORKERS"))
-	err = errors.Join(err, lookupBool(&base.ReadOnly, "EXAMPLE_READ_ONLY"))
+	err = errors.Join(err, env.LookupBool(&base.Color, "EXAMPLE_COLOR"))
+	err = errors.Join(err, env.LookupBool(&base.Verbose, "EXAMPLE_VERBOSE"))
+	env.LookupString(&base.File, "EXAMPLE_FILE")
+	err = errors.Join(err, env.LookupInt(&base.Workers, "EXAMPLE_WORKERS"))
+	err = errors.Join(err, env.LookupBool(&base.ReadOnly, "EXAMPLE_READ_ONLY"))
 	return err
 }
 
@@ -41,40 +40,6 @@ func (base *ExampleVars) foldArgs(args []string) error {
 	if err := fs.Parse(args); err != nil {
 		return fmt.Errorf("failed to parse command line args: %w", err)
 	}
-	return nil
-}
-
-// lookupString in environment; write to target if it's set.
-func lookupString(target *string, name string) {
-	read, ok := os.LookupEnv(name)
-	if ok {
-		*target = read
-	}
-}
-
-// lookupInt in environment; write to target if it's set and parseable as a
-// decimal int.
-func lookupInt(target *int, name string) error {
-	raw, ok := os.LookupEnv(name)
-	if !ok {
-		return nil
-	}
-	parsed, err := strconv.Atoi(raw)
-	if err != nil {
-		return fmt.Errorf("error parsing int environment variable '%s': %w", name, err)
-	}
-	*target = parsed
-	return nil
-}
-
-// lookupBool in environment; write to target if it's set.
-func lookupBool(target *bool, name string) error {
-	raw, ok := os.LookupEnv(name)
-	if !ok {
-		return nil
-	}
-	truthiness := raw != "" && strings.ToLower(raw) != "false"
-	*target = truthiness
 	return nil
 }
 
