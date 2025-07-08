@@ -19,7 +19,7 @@ go install github.com/lukasschwab/diego/cmd/diego@latest
 You can describe the configuration your program expects with a well-commented `struct` type:
 
 ```go
-//go:generate go run ../../cmd/diego --struct-type=ExampleVars
+//go:generate diego --struct-type=ExampleVars
 type ExampleVars struct {
 	// --color: enable ANSI colors in CLI output
 	Color bool `json:"color,omitempty"`
@@ -65,6 +65,7 @@ Usage of EXAMPLE:
 
 ## Motivations
 
-+ Why have these kinds of config fallbacks?
-+ Why not use `flag` or `cobra`?
-+ Why not more validation, e.g. optional and required arguments?
++ Why have these kinds of config fallbacks? Different users have different needs and conveniences. Manually managing (and documenting!) the correspondence between command line flags and env variables *sucks*, or incentivizes using bad env variable names.
++ Why not use the standard library's `flag` package? You want to read env variables too! See above. That said, if `diego` isn't working for you, using `flag` directly is a good idea.
++ Why not use `cobra`? You might not need it. Lots of programs don't merit the complexity of cobra's registration pattern. This stuff gets confusing fast.
++ Why not more validation, e.g. required arguments or enum types? I'm not stopping you. I'm just not building it in.
