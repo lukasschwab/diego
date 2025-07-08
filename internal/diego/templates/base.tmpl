@@ -6,8 +6,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-
-	"github.com/lukasschwab/diego/pkg/env"
+	"os"
+	"strconv"
+	"strings"
 )
 
 // Parse initializes the {{ .StructName }} from command-line and environment

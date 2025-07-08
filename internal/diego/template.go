@@ -4,6 +4,7 @@ import (
 	_ "embed" // Compile-time dependency.
 	"fmt"
 	"log"
+	"strings"
 )
 
 // TemplateSchema is an intermediate derived from Schema for use with Template.
@@ -36,11 +37,11 @@ func (f TemplateFlag) EnvVar() string {
 func (f TemplateFlag) EnvLookup(errName string) string {
 	switch f.GoType {
 	case "string":
-		return fmt.Sprintf(`env.LookupString(&base.%s, "%s")`, f.GoName(), f.EnvVar())
+		return fmt.Sprintf(`lookupString(&base.%s, "%s")`, f.GoName(), f.EnvVar())
 	case "int":
-		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupInt(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
+		return fmt.Sprintf(`%s = errors.Join(%s, lookupInt(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
 	case "bool":
-		return fmt.Sprintf(`%s = errors.Join(%s, env.LookupBool(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
+		return fmt.Sprintf(`%s = errors.Join(%s, lookupBool(&base.%s, "%s"))`, errName, errName, f.GoName(), f.EnvVar())
 	default:
 		log.Fatalf("Unsupported go type '%v'", f.GoType)
 		return ""
@@ -62,8 +63,23 @@ func (f TemplateFlag) FlagVar() string {
 	}
 }
 
+// Extract the reusable env accessors (sans package name) for inlining in
+// templates.
+//
+//   - We could hardcode in the templates, but that would loosen the
+//     relationship between env helpers and their tests.
+//   - We could import in the templates, but that forces users to add a
+//     dependency to their go.mod to use diego.
+//
+//go:embed env.go
+var envAddendumRaw string
+var envAddendum = strings.Split(envAddendumRaw, "TEMPLATE")[1]
+
 //go:embed templates/base.tmpl
-var BaseTemplate string
+var baseTemplate string
+
+// BaseTemplate for generated arg parsers.
+var BaseTemplate = baseTemplate + envAddendum
 
 //go:embed templates/struct.tmpl
 var structAddendum string
