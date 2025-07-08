@@ -1,0 +1,9 @@
+
+
+// {{ .StructName }} generated from {{ .Source }}.
+type {{ .StructName }} struct {
+{{- range .Flags }}
+	// --{{ .Name }}: {{ .Description }}
+	{{ .GoName }} {{ .GoType }} `json:"{{ .Name }},omitempty"`
+{{- end }}
+}

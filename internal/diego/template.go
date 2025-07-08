@@ -62,5 +62,12 @@ func (f TemplateFlag) FlagVar() string {
 	}
 }
 
-//go:embed templates/diego.tmpl
-var Template string
+//go:embed templates/base.tmpl
+var BaseTemplate string
+
+//go:embed templates/struct.tmpl
+var structAddendum string
+
+// JSONTemplate is the same as the BaseTemplate, but it additionally defines the
+// struct type for the parsed variables.
+var JSONTemplate = BaseTemplate + structAddendum

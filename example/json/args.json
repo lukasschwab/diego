@@ -1,5 +1,5 @@
 {
-    "environmentPrefix": "fooxample",
+    "environmentPrefix": "example",
     "flags": [
         {
             "name": "color",

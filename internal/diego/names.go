@@ -17,13 +17,13 @@ func ValidatePrefix(schemaPrefix string) (Prefix, error) {
 	} else if !match {
 		return "", fmt.Errorf("invalid environment prefix '%s'; should match %s", schemaPrefix, validPrefixRegex)
 	}
-	return Prefix(schemaPrefix), nil
+	return Prefix(strings.ToUpper(schemaPrefix)), nil
 }
 
 // BuildEnvVar from prefix and name. If you have prefix "FOO" and name `bar-baz`
 // you get the env var `FOO_BAR_BAZ`.
 func BuildEnvVar(prefix Prefix, name string) string {
-	return fmt.Sprintf("%s_%s", strings.ToUpper(string(prefix)), strings.ToUpper(strings.ReplaceAll(name, "-", "_")))
+	return fmt.Sprintf("%s_%s", prefix, strings.ToUpper(strings.ReplaceAll(name, "-", "_")))
 }
 
 // BuildGoName from config name. If you have the flag `bar-baz`, the Go name is

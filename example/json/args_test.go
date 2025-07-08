@@ -7,9 +7,9 @@ import (
 	"github.com/peterldowns/testy/check"
 )
 
-func TestLukasVars_Parse(t *testing.T) {
+func TestExampleVars_Parse(t *testing.T) {
 	t.Run("no env or flags", func(t *testing.T) {
-		vars := &FooxampleVars{}
+		vars := &ExampleVars{}
 		err := vars.Parse([]string{})
 		check.Nil(t, err)
 		assert.False(t, vars.Color)
@@ -19,12 +19,12 @@ func TestLukasVars_Parse(t *testing.T) {
 	})
 
 	t.Run("env only", func(t *testing.T) {
-		t.Setenv("LUKAS_COLOR", "true")
-		t.Setenv("LUKAS_VERBOSE", "true")
-		t.Setenv("LUKAS_FILE", "/tmp/foo")
-		t.Setenv("LUKAS_WORKERS", "10")
+		t.Setenv("EXAMPLE_COLOR", "true")
+		t.Setenv("EXAMPLE_VERBOSE", "true")
+		t.Setenv("EXAMPLE_FILE", "/tmp/foo")
+		t.Setenv("EXAMPLE_WORKERS", "10")
 
-		vars := &FooxampleVars{}
+		vars := &ExampleVars{}
 		err := vars.Parse([]string{})
 		check.Nil(t, err)
 
@@ -35,10 +35,10 @@ func TestLukasVars_Parse(t *testing.T) {
 	})
 
 	t.Run("env and flags", func(t *testing.T) {
-		t.Setenv("LUKAS_COLOR", "false")
-		t.Setenv("LUKAS_VERBOSE", "false")
-		t.Setenv("LUKAS_FILE", "/tmp/foo")
-		t.Setenv("LUKAS_WORKERS", "10")
+		t.Setenv("EXAMPLE_COLOR", "false")
+		t.Setenv("EXAMPLE_VERBOSE", "false")
+		t.Setenv("EXAMPLE_FILE", "/tmp/foo")
+		t.Setenv("EXAMPLE_WORKERS", "10")
 
 		args := []string{
 			"--color=true",
@@ -46,7 +46,7 @@ func TestLukasVars_Parse(t *testing.T) {
 			"--file=/tmp/bar",
 			"--workers=20",
 		}
-		vars := &FooxampleVars{}
+		vars := &ExampleVars{}
 		err := vars.Parse(args)
 		check.Nil(t, err)
 

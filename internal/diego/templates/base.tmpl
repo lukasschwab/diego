@@ -10,14 +10,6 @@ import (
 	"github.com/lukasschwab/diego/pkg/env"
 )
 
-// {{ .StructName }} generated from {{ .Source }}.
-type {{ .StructName }} struct {
-{{- range .Flags }}
-	// --{{ .Name }}: {{ .Description }}
-	{{ .GoName }} {{ .GoType }} `json:"{{ .Name }},omitempty"`
-{{- end }}
-}
-
 // Parse initializes the {{ .StructName }} from command-line and environment
 // variables. Typically args should be os.Args[1:]; do not include the
 // executable name.
