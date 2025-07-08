@@ -6,7 +6,6 @@ import (
 )
 
 //go:generate go run ../../cmd/diego --struct-type=ExampleVars
-
 type ExampleVars struct {
 	// --color: enable ANSI colors in CLI output
 	Color bool `json:"color,omitempty"`
