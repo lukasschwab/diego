@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"go/format"
 	"log"
@@ -18,11 +17,15 @@ import (
 var (
 	tmpl       *template.Template
 	nativeTmpl *template.Template
-
-	// TODO: use diego to parse these.
-	// TODO: allow manually setting a prefix instead of using the struct name.
-	typeName = flag.String("type", "", "name of the struct to generate a parser for")
 )
+
+//go:generate diego -type=DiegoVars
+type DiegoVars struct {
+	// --json-file: relative path of the JSON file specifying command line args
+	JsonFile string `json:"json-file"`
+	// --type: name of the struct specifying command line args
+	Type string `json:"type"`
+}
 
 func init() {
 	var err error
@@ -35,9 +38,12 @@ func init() {
 }
 
 func main() {
-	flag.Parse()
+	vars := new(DiegoVars)
+	if err := vars.Parse(os.Args[1:]); err != nil {
+		log.Fatalf("Error parsing args: %v", err)
+	}
 
-	if *typeName != "" {
+	if vars.Type != "" {
 		gofile := os.Getenv("GOFILE")
 		if gofile == "" {
 			log.Fatalf("GOFILE env var must be set in -type mode")
@@ -47,7 +53,7 @@ func main() {
 			log.Fatalf("GOPACKAGE env var must be set in -type mode")
 		}
 
-		templateSchema, err := diego.FromAst(gofile, *typeName)
+		templateSchema, err := diego.FromAst(gofile, vars.Type)
 		if err != nil {
 			log.Fatalf("error parsing gofile: %v", err)
 		}
@@ -59,22 +65,17 @@ func main() {
 		return
 	}
 
-	if len(flag.Args()) != 1 {
-		log.Fatalf("Usage: %s <input.json>", os.Args[0])
-	}
-	source := flag.Arg(0)
-
-	d, err := parseSchema(source)
+	d, err := parseSchema(vars.JsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	templateSchema, err := prepareSchema(d, source)
+	templateSchema, err := prepareSchema(d, vars.JsonFile)
 	if err != nil {
 		log.Fatalf("error preparing diego schema for generation: %v", err)
 	}
 
-	if err := generate(source, templateSchema); err != nil {
+	if err := generate(vars.JsonFile, templateSchema); err != nil {
 		log.Fatal(err)
 	}
 }
