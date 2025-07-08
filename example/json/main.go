@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-//go:generate go run ../cmd/diego ./args.json
+//go:generate go run ../../cmd/diego ./args.json
 
 func main() {
 	vars := new(FooxampleVars)
