@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-//go:generate go run ../../cmd/diego -type=ExampleVars
+//go:generate go run ../../cmd/diego --struct-type=ExampleVars
 
 type ExampleVars struct {
 	// --color: enable ANSI colors in CLI output

@@ -24,14 +24,14 @@ func (base *DiegoVars) Parse(args []string) error {
 func (base *DiegoVars) foldEnv() error {
 	var err error
 	lookupString(&base.JsonFile, "DIEGO_JSON_FILE")
-	lookupString(&base.Type, "DIEGO_TYPE")
+	lookupString(&base.StructType, "DIEGO_STRUCT_TYPE")
 	return err
 }
 
 func (base *DiegoVars) foldArgs(args []string) error {
 	fs := flag.NewFlagSet("DIEGO", flag.ExitOnError)
 	fs.StringVar(&base.JsonFile, "json-file", base.JsonFile, "relative path of the JSON file specifying command line args [DIEGO_JSON_FILE]")
-	fs.StringVar(&base.Type, "type", base.Type, "name of the struct specifying command line args [DIEGO_TYPE]")
+	fs.StringVar(&base.StructType, "struct-type", base.StructType, "name of the struct specifying command line args [DIEGO_STRUCT_TYPE]")
 	if err := fs.Parse(args); err != nil {
 		return fmt.Errorf("failed to parse command line args: %w", err)
 	}
