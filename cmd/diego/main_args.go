@@ -6,8 +6,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-
-	"github.com/lukasschwab/diego/pkg/env"
+	"os"
+	"strconv"
+	"strings"
 )
 
 // Parse initializes the DiegoVars from command-line and environment
@@ -22,8 +23,8 @@ func (base *DiegoVars) Parse(args []string) error {
 
 func (base *DiegoVars) foldEnv() error {
 	var err error
-	env.LookupString(&base.JsonFile, "DIEGO_JSON_FILE")
-	env.LookupString(&base.Type, "DIEGO_TYPE")
+	lookupString(&base.JsonFile, "DIEGO_JSON_FILE")
+	lookupString(&base.Type, "DIEGO_TYPE")
 	return err
 }
 
@@ -34,5 +35,39 @@ func (base *DiegoVars) foldArgs(args []string) error {
 	if err := fs.Parse(args); err != nil {
 		return fmt.Errorf("failed to parse command line args: %w", err)
 	}
+	return nil
+}
+
+// lookupString in environment; write to target if it's set.
+func lookupString(target *string, name string) {
+	read, ok := os.LookupEnv(name)
+	if ok {
+		*target = read
+	}
+}
+
+// lookupInt in environment; write to target if it's set and parseable as a
+// decimal int.
+func lookupInt(target *int, name string) error {
+	raw, ok := os.LookupEnv(name)
+	if !ok {
+		return nil
+	}
+	parsed, err := strconv.Atoi(raw)
+	if err != nil {
+		return fmt.Errorf("error parsing int environment variable '%s': %w", name, err)
+	}
+	*target = parsed
+	return nil
+}
+
+// lookupBool in environment; write to target if it's set.
+func lookupBool(target *bool, name string) error {
+	raw, ok := os.LookupEnv(name)
+	if !ok {
+		return nil
+	}
+	truthiness := raw != "" && strings.ToLower(raw) != "false"
+	*target = truthiness
 	return nil
 }
