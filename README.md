@@ -1,4 +1,4 @@
-# diego
+# diego [![Go Reference](https://pkg.go.dev/badge/github.com/lukasschwab/diego.svg)](https://pkg.go.dev/github.com/lukasschwab/diego) ![golangci-lint status](https://github.com/lukasschwab/diego/actions/workflows/go.yml/badge.svg?branch=main)
 
 > <img src="https://i.ytimg.com/vi/gaXigSu72A4/hqdefault.jpg" height="75px" alt="It's German for 'the Go, the.'" />
 > 
