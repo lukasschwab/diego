@@ -63,6 +63,8 @@ func (f TemplateFlag) FlagVar() string {
 	}
 }
 
+// TODO: look into template composition: {{template "name" .}}
+
 // Extract the reusable env accessors (sans package name) for inlining in
 // templates.
 //
